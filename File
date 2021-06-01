@@ -1,0 +1,184 @@
+<%@page import="java.sql.ResultSet"%>
+<jsp:useBean class="DB.ConnectionClass" id="con"></jsp:useBean>
+    
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Hospital Registration</title><%@include file="Header.jsp" %>
+        <script src="jQuery.js"></script>
+        <script>
+            function getTown(a){
+                //alert(a);
+                $.ajax(
+                        {
+                            url:"ajax_town.jsp?did="+a,
+                    success:function(result){
+                        //alert(result);
+                        $("#ddlTown").html(result);
+                        
+                    }
+                });
+            }
+            function getLocality(b){
+                //alert(a);
+                $.ajax(
+                        {
+                            url:"ajax_locality.jsp?did="+b,
+                    success:function(result){
+                        //alert(result);
+                        $("#ddlLocality").html(result);
+                        
+                    }
+                });
+            }
+            </script>
+    </head>
+    <body>   <br><br> <br><br> <br><br>
+        <div id="tab" align="center">
+     
+        <h2 align="center">HOSPITAL REGISTRATION</h2>
+    
+        <form method="post" enctype="multipart/form-data" action="../ActionPages/HosiptalUpload.jsp">
+            <table align="center" align="center" cellpadding="10" border="1" style="border-collapse: collapse;">
+                &nbsp;&nbsp;&nbsp;
+                <tr>
+                    <td>License No:</td>
+                    <td><input type="text" name="txtlicno"></td>
+                </tr>
+                <tr>
+                    <td>Name </td>
+                    <td><input type="text" name="txtname"></td>     
+                </tr>
+                 <tr>
+                    <td>District</td>
+                    <td>
+                      
+                        
+                        <select name="ddlDistrict" onchange="getTown(this.value)">
+                            <option value="">-------Select-------</option>
+                            <%
+                                String sel = "select * from tbl_district";
+                                ResultSet rs = con.selectCommand(sel);
+                                while (rs.next()) {
+
+                            %>
+
+                            <option value="<%=rs.getString("district_id")%>"><%=rs.getString("district_name")%></option>
+
+
+
+                            <%
+
+                                }
+                            %>
+                        </select>
+                        
+                        
+                    </td>
+                          
+                        
+                </tr>
+                <tr>
+                    <td>Town</td>
+                    <td>
+                         
+                        <select name="ddlTown" id="ddlTown" onchange="getLocality(this.value)">
+                            <option value="">-------Select-------</option>
+                            <%
+                                String sel1 = "select * from tbl_town";
+                                ResultSet rs1 = con.selectCommand(sel1);
+                                while (rs1.next()) {
+
+                            %>
+
+                            <option value="<%=rs1.getString("town_id")%>"><%=rs1.getString("town_name")%></option>
+
+
+
+                            <%
+
+                                }
+                            %>
+                        </select>
+                        
+                        
+                    </td>     
+                </tr>
+                <tr>
+                    <td>Locality</td>
+                    <td>
+                         
+                        <select name="ddlLocality" id="ddlLocality">
+                            <option value="">-------Select-------</option>
+                            <%
+                                String sel2 = "select * from tbl_locality";
+                                ResultSet rs2 = con.selectCommand(sel2);
+                                while (rs2.next()) {
+
+                            %>
+
+                            <option value="<%=rs2.getString("locality_id")%>"><%=rs2.getString("locality_name")%></option>
+
+
+
+                            <%
+
+                                }
+                            %>
+                        </select>
+                        
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Affiliation</td>
+                    <td><input type="radio" name="rdbaffil" value="private">Private <input type="radio" name="rdbaffil" value="govt">Govt. </td>     
+                </tr>
+               
+                <tr>
+                    <td>Contact No:</td>
+                    <td><input type="text" name="txtnum"></td>     
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td><textarea name="adress" rows="5" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                    <td>Pincode</td>
+                    <td><input type="text" name="txtnum"></td>
+                </tr>
+                 <tr>
+                    <td>Facilities Avaliable</td>
+                    <td><textarea name="facil" rows="5" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                    <td>Logo</td>
+                    <td><input type="file" name="flogo"></td>
+                </tr>
+                 <tr>
+                    <td>Proof</td>
+                    <td><input type="file" name="fproof"></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" name="txtusername"></td>
+                </tr>
+                <tr>
+                    <td>Password </td>
+                    <td><input type="text" name="txtpswd"></td>     
+                </tr>
+                  <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" name="btnsub" value="Submit">
+                
+                    </td>
+                </tr>
+                
+                
+            </table>
+        </form>
+        </div>
+                            <%@include file="Footer.jsp" %>
+    </body>
+</html>
